@@ -1,0 +1,184 @@
+/* ====================================================================
+// BASE STYLES AND LAYOUT
+// ==================================================================== */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e9ecef;
+    /* Light gray background for a clean look */
+    color: #343a40;
+    /* Dark text */
+    padding: 20px;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.calculator-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* Subtle elevation */
+}
+
+h1,
+h2 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    color: #007bff;
+    /* Primary blue color */
+    font-size: 1.8em;
+    padding-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 3px solid #007bff;
+    text-transform: uppercase;
+}
+
+h2 {
+    font-size: 1.5em;
+    border-bottom: 2px solid #ccc;
+    color: #343a40;
+}
+
+p {
+    margin-bottom: 20px;
+    font-size: 0.95em;
+    color: #6c757d;
+}
+
+/* ====================================================================
+// INPUT SECTION STYLES
+// ==================================================================== */
+
+.input-section {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allows wrapping on smaller screens */
+    align-items: center;
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+}
+
+.input-section label {
+    font-weight: 600;
+    margin-right: 8px;
+    white-space: nowrap;
+    /* Prevents label wrapping */
+}
+
+input[type="number"],
+select {
+    padding: 8px 10px;
+    margin-right: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    width: 100px;
+    /* Standardized width for input numbers */
+    transition: border-color 0.2s;
+    font-size: 0.9em;
+}
+
+select {
+    width: 180px;
+    /* Wider select for better option visibility */
+    background-color: #fff;
+}
+
+input[type="number"]:focus,
+select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+}
+
+button {
+    padding: 8px 20px;
+    cursor: pointer;
+    background-color: #28a745;
+    /* Success green */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* ====================================================================
+// RESULTS GRID STYLES
+// ==================================================================== */
+
+.results-grid {
+    display: grid;
+    gap: 1px;
+    /* Minimal gap for crisp lines */
+    border: 1px solid #adb5bd;
+    border-radius: 5px;
+    overflow: hidden;
+    /* Ensures borders look clean */
+    margin-top: 15px;
+}
+
+/* Define columns for each calculator type */
+.results-grid:not(.shock-grid):not(.oblique-grid) {
+    /* Isentropic: 3 pairs of label/value */
+    grid-template-columns: repeat(3, 1fr 1fr);
+}
+
+.shock-grid {
+    /* Normal Shock: 2 pairs of label/value */
+    grid-template-columns: repeat(2, 1fr 1fr);
+}
+
+.oblique-grid {
+    /* Oblique Shock: 4 pairs of label/value */
+    grid-template-columns: repeat(4, 1fr 1fr);
+}
+
+.grid-item {
+    font-weight: 600;
+    padding: 10px 12px;
+    background-color: #f1f3f5;
+    /* Light header background */
+    border-right: 1px solid #adb5bd;
+    font-size: 0.9em;
+    white-space: nowrap;
+}
+
+/* Alternate shading for rows in the label column for better visual tracking */
+.grid-item:nth-child(even) {
+    background-color: #e9ecef;
+    /* Slightly darker shade for value field */
+}
+
+.grid-item-value {
+    padding: 10px 12px;
+    background-color: #fff;
+    font-family: 'Roboto Mono', monospace;
+    text-align: right;
+    font-size: 1em;
+    color: #495057;
+    /* Darker value color */
+}
+
+/* Ensure the last label in a row doesn't have a right border */
+.grid-item:nth-child(4n) {
+    border-right: none;
+}
+
+/* Ensure the last column in Oblique grid doesn't have a right border */
+.oblique-grid .grid-item:nth-child(8n) {
+    border-right: none;
+}

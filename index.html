@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compressible Flow Calculator</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        // Inline configuration to auto-render LaTeX within $...$ and \(...\)
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+
+    <div class="calculator-container">
+        <h2>Isentropic Flow Relations</h2>
+        <p>Perfect Gas, Gamma ($\gamma$): <input type="number" id="gamma-input-iso" value="1.4" min="1.01" step="0.01">,
+            angles in degrees.</p>
+
+        <div class="input-section">
+            <label>INPUT:</label>
+            <select id="input-select-iso">
+                <option value="M">Mach number (M)</option>
+                <option value="T_T0">T/T₀</option>
+                <option value="p_p0">p/p₀</option>
+                <option value="rho_rho0">ρ/ρ₀</option>
+                <option value="A_Astar_sub">A/A* (sub)</option>
+                <option value="A_Astar_sup">A/A* (sup)</option>
+                <option value="mu_deg">Mach angle ($\mu$)</option>
+                <option value="nu_deg">P-M angle ($\nu$)</option>
+            </select>
+            <input type="number" id="input-value-iso" value="2.0" step="any">
+            <button id="calc-iso">Calculate</button>
+        </div>
+
+        <div class="results-grid">
+            <div class="grid-item">Mach number (M):</div>
+            <div class="grid-item-value"><span id="M_output_iso"></span></div>
+            <div class="grid-item">Mach angle ($\mu$):</div>
+            <div class="grid-item-value"><span id="mu_deg_output_iso"></span></div>
+            <div class="grid-item">P-M angle ($\nu$):</div>
+            <div class="grid-item-value"><span id="nu_deg_output_iso"></span></div>
+
+            <div class="grid-item">p/p₀:</div>
+            <div class="grid-item-value"><span id="p_p0_output_iso"></span></div>
+            <div class="grid-item">ρ/ρ₀:</div>
+            <div class="grid-item-value"><span id="rho_rho0_output_iso"></span></div>
+            <div class="grid-item">T/T₀:</div>
+            <div class="grid-item-value"><span id="T_T0_output_iso"></span></div>
+
+            <div class="grid-item">p/p*:</div>
+            <div class="grid-item-value"><span id="p_pstar_output_iso"></span></div>
+            <div class="grid-item">ρ/ρ*:</div>
+            <div class="grid-item-value"><span id="rho_rhostar_output_iso"></span></div>
+            <div class="grid-item">T/T*:</div>
+            <div class="grid-item-value"><span id="T_Tstar_output_iso"></span></div>
+
+            <div class="grid-item">A/A*:</div>
+            <div class="grid-item-value"><span id="A_Astar_output_iso"></span></div>
+        </div>
+    </div>
+
+    <div class="calculator-container">
+        <h2>Normal Shock Relations</h2>
+        <p>Perfect Gas, Gamma ($\gamma$): <input type="number" id="gamma-input-shock" value="1.4" min="1.01"
+                step="0.01"></p>
+
+        <div class="input-section">
+            <label>INPUT:</label>
+            <select id="input-select-shock">
+                <option value="M1">M₁</option>
+                <option value="M2">M₂</option>
+                <option value="p2_p1">p₂/p₁</option>
+                <option value="rho2_rho1">ρ₂/ρ₁</option>
+                <option value="T2_T1">T₂/T₁</option>
+                <option value="p02_p01">p₀₂/p₀₁</option>
+                <option value="p1_p02">p₁/p₀₂</option>
+            </select>
+            <input type="number" id="input-value-shock" value="2.0" step="any">
+            <button id="calc-shock">Calculate</button>
+        </div>
+
+        <div class="results-grid shock-grid">
+            <div class="grid-item">M₁:</div>
+            <div class="grid-item-value"><span id="M1_output_shock"></span></div>
+            <div class="grid-item">M₂:</div>
+            <div class="grid-item-value"><span id="M2_output_shock"></span></div>
+            <div class="grid-item">p₂/p₁:</div>
+            <div class="grid-item-value"><span id="p2_p1_output_shock"></span></div>
+            <div class="grid-item">ρ₂/ρ₁:</div>
+            <div class="grid-item-value"><span id="rho2_rho1_output_shock"></span></div>
+            <div class="grid-item">T₂/T₁:</div>
+            <div class="grid-item-value"><span id="T2_T1_output_shock"></span></div>
+            <div class="grid-item">p₀₂/p₀₁:</div>
+            <div class="grid-item-value"><span id="p02_p01_output_shock"></span></div>
+            <div class="grid-item">p₁/p₀₂:</div>
+            <div class="grid-item-value"><span id="p1_p02_output_shock"></span></div>
+        </div>
+    </div>
+
+    <div class="calculator-container">
+        <h2>Oblique Shock Relations</h2>
+        <p>Perfect Gas, Gamma ($\gamma$): <input type="number" id="gamma-input-oblique" value="1.4" min="1.01"
+                step="0.01">, angles in degrees.</p>
+
+        <div class="input-section">
+            <label>INPUT M₁:</label>
+            <input type="number" id="input-M1-oblique" value="3.0" step="any">
+            <label>INPUT 2:</label>
+            <select id="input-select-oblique">
+                <option value="wave_angle">Wave angle ($\beta$)</option>
+                <option value="turn_angle_weak">δ (Weak shock)</option>
+                <option value="turn_angle_strong">δ (Strong shock)</option>
+                <option value="M1n">M₁ normal (M₁n)</option>
+            </select>
+            <input type="number" id="input-value-oblique" value="30.0" step="any">
+            <button id="calc-oblique">Calculate</button>
+        </div>
+
+        <div class="results-grid oblique-grid">
+            <div class="grid-item">M₁ normal (M₁n):</div>
+            <div class="grid-item-value"><span id="M1n_output_oblique"></span></div>
+
+            <div class="grid-item">M₂:</div>
+            <div class="grid-item-value"><span id="M2_output_oblique"></span></div>
+            <div class="grid-item">δ (Turn angle):</div>
+            <div class="grid-item-value"><span id="turn_angle_output_oblique"></span></div>
+            <div class="grid-item">Wave angle ($\beta$):</div>
+            <div class="grid-item-value"><span id="wave_angle_output_oblique"></span></div>
+            <div class="grid-item">M₂ normal (M₂n):</div>
+            <div class="grid-item-value"><span id="M2n_output_oblique"></span></div>
+
+            <div class="grid-item">p₂/p₁:</div>
+            <div class="grid-item-value"><span id="p2_p1_output_oblique"></span></div>
+            <div class="grid-item">ρ₂/ρ₁:</div>
+            <div class="grid-item-value"><span id="rho2_rho1_output_oblique"></span></div>
+            <div class="grid-item">T₂/T₁:</div>
+            <div class="grid-item-value"><span id="T2_T1_output_oblique"></span></div>
+            <div class="grid-item">p₀₂/p₀₁:</div>
+            <div class="grid-item-value"><span id="p02_p01_output_oblique"></span></div>
+        </div>
+    </div>
+
+    <script type="module" src="flow-solver.js"></script>
+    <script type="module" src="ui-handler.js"></script>
+</body>
+
+</html>

@@ -1,5 +1,4 @@
-// UI-HANDLER.JS: FLOW CALCULATOR INPUTS, VALIDATION, AND OUTPUT
-// ====================================================================
+// UI-HANDLER.JS: FLOW CALCULATOR INPUTS, VALIDATION, AND OUTPUT DISPLAY
 
 // Import all required functions from the flow-solver module
 import {
@@ -19,7 +18,6 @@ function clearGrid(gridSelector) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Attach event listeners to calculation buttons
     document.getElementById('calc-iso').addEventListener('click', calculateIsentropic);
     document.getElementById('calc-shock').addEventListener('click', calculateNormalShock);
     document.getElementById('calc-oblique').addEventListener('click', calculateObliqueShock);
@@ -31,8 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// function to calculate Isentropic Flow Properties
 function calculateIsentropic() {
-    // Clear isentropic grid
     clearGrid('.results-grid:not(.shock-grid):not(.oblique-grid)');
 
     const inputType = document.getElementById('input-select-iso').value;
@@ -50,7 +48,6 @@ function calculateIsentropic() {
     if (inputType === 'M') {
         M = inputValue;
     } else {
-        // Solve for M from the given ratio
         M = solveMFromRatio(inputType, inputValue, gamma);
     }
     
@@ -65,9 +62,9 @@ function calculateIsentropic() {
     const results = computeFlowProperties(M, gamma);
 
     // Display Results for Isentropic
-    document.getElementById('M_output_iso').textContent = results.M.toFixed(4);
+    document.getElementById('M_output_iso').textContent = results.M.toFixed(6);
     // Handle mu (Mach angle) display for subsonic flow
-    document.getElementById('mu_deg_output_iso').textContent = (results.mu_deg !== 'N/A (<M1)') ? results.mu_deg.toFixed(3) : 'N/A (<M₁)';
+    document.getElementById('mu_deg_output_iso').textContent = (results.mu_deg !== 'N/A (<M1)') ? results.mu_deg.toFixed(6) : 'N/A (<M₁)';
     document.getElementById('nu_deg_output_iso').textContent = results.nu_deg.toFixed(6);
     document.getElementById('T_T0_output_iso').textContent = results.T_T0.toFixed(6);
     document.getElementById('p_p0_output_iso').textContent = results.p_p0.toFixed(6);
@@ -79,6 +76,7 @@ function calculateIsentropic() {
 }
 
 
+// Function to calculate Normal Shock Relations
 function calculateNormalShock() {
     // Clear normal shock grid
     clearGrid('.shock-grid');
@@ -114,14 +112,13 @@ function calculateNormalShock() {
         const results = computeNormalShockRelations(inputValue, gamma);
 
         // Display Subsonic/Isentropic Results (ratios=1)
-        document.getElementById('M1_output_shock').textContent = M1_display.toFixed(4);
+        document.getElementById('M1_output_shock').textContent = M1_display.toFixed(6);
         document.getElementById('M2_output_shock').textContent = 'N/A (No Shock)'; // Clearer UI
         document.getElementById('p2_p1_output_shock').textContent = '1.0000';
         document.getElementById('rho2_rho1_output_shock').textContent = '1.0000';
         document.getElementById('T2_T1_output_shock').textContent = '1.0000';
         document.getElementById('p02_p01_output_shock').textContent = '1.0000';
-        // p1/p02 is still valid (it's p1/p01)
-        document.getElementById('p1_p02_output_shock').textContent = results.p1_p02.toFixed(4);
+        document.getElementById('p1_p02_output_shock').textContent = results.p1_p02.toFixed(6);
         return;
     }
 
@@ -139,6 +136,7 @@ function calculateNormalShock() {
 }
 
 
+// Function to calculate Oblique Shock Relations
 function calculateObliqueShock() {
     clearGrid('.oblique-grid');
 
@@ -174,7 +172,7 @@ function calculateObliqueShock() {
             // Detached shock error: Alert user
             window.alert("Error: Detached Shock. The flow deflection angle (θ) is too high for M₁.");
             document.getElementById('M2_output_oblique').textContent = 'Detached';
-            document.getElementById('turn_angle_output_oblique').textContent = turn_angle_deg.toFixed(4);
+            document.getElementById('turn_angle_output_oblique').textContent = turn_angle_deg.toFixed(6);
             return;
         }
 
@@ -185,7 +183,7 @@ function calculateObliqueShock() {
             // Selected solution doesn't exist
             document.getElementById('M2_output_oblique').textContent = (inputType === 'turn_angle_weak') ?
                 'N/A (No Weak)' : 'N/A (No Strong)';
-            document.getElementById('turn_angle_output_oblique').textContent = turn_angle_deg.toFixed(4);
+            document.getElementById('turn_angle_output_oblique').textContent = turn_angle_deg.toFixed(6);
             return;
         }
         

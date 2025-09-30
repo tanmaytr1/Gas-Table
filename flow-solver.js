@@ -1,5 +1,4 @@
 // FLOW-SOLVER.JS: CORE COMPRESSIBLE FLOW MATHEMATICS
-// ====================================================================
 
 const maxIter = 100; // Max iterations for numerical solutions
 const tolerance = 1e-6; // Tolerance for numerical solutions
@@ -7,16 +6,14 @@ const tolerance = 1e-6; // Tolerance for numerical solutions
 const degToRad = Math.PI / 180; // Degrees to radians
 const radToDeg = 180 / Math.PI; // Radians to degrees
 
-// ====================================================================
 // ISENTROPIC FLOW RELATIONS
-// ====================================================================
 
 /**
  * Calculates all isentropic flow properties (ratios to stagnation and critical states) for M and gamma.
  */
 export function computeFlowProperties(M, gamma) {
-    const R_g = (gamma - 1) / 2; // (gamma - 1) / 2
-    const term1 = 1 + R_g * M * M; // 1 + R_g * M^2
+    const R_g = (gamma - 1) / 2; 
+    const term1 = 1 + R_g * M * M; 
 
     // Critical relations (M=1)
     const T_star_T0 = 2 / (gamma + 1);
@@ -64,6 +61,7 @@ export function solveMFromRatio(ratio_name, ratio_value, gamma) {
     const R_g = (gamma - 1) / 2;
     let M_squared;
 
+    // Numerical solutions for non-linear relations
     switch (ratio_name) {
         case 'T_T0': M_squared = (1 / ratio_value - 1) / R_g; break;
         case 'p_p0': const E_p = gamma / (gamma - 1); M_squared = (Math.pow(ratio_value, -1 / E_p) - 1) / R_g; break;
@@ -124,9 +122,9 @@ export function solveMFromRatio(ratio_name, ratio_value, gamma) {
 }
 
 
-// ====================================================================
+
 // NORMAL SHOCK RELATIONS
-// ====================================================================
+
 
 /**
  * Calculates all normal shock relations for M1 and gamma.
@@ -175,6 +173,7 @@ export function computeNormalShockRelations(M1, gamma) {
 /**
  * Solves for upstream Mach number M1 given a shock ratio.
  */
+
 export function solveM1FromShockRatio(ratio_name, ratio_value, gamma) {
     const M_sq = ratio_value * ratio_value;
     const gamma_minus_1 = gamma - 1;
@@ -252,13 +251,11 @@ export function solveM1FromShockRatio(ratio_name, ratio_value, gamma) {
     return NaN;
 }
 
-// ====================================================================
-// OBLIQUE SHOCK RELATIONS
-// ====================================================================
 
-/**
- * Calculates turn angle (theta) from M1 and wave angle (beta). (theta-beta-M relation)
- */
+
+// OBLIQUE SHOCK RELATIONS
+
+// Calculates turn angle (theta) from M1 and wave angle (beta). (theta-beta-M relation)
 function thetaBetaM(M1, beta_rad, gamma) {
     const M1_sq = M1 * M1;
     const sin_beta_sq = Math.sin(beta_rad) * Math.sin(beta_rad);
@@ -270,9 +267,8 @@ function thetaBetaM(M1, beta_rad, gamma) {
     return Math.atan(tan_theta_num / tan_theta_den);
 }
 
-/**
- * Calculates flow properties behind an oblique shock using M1 and wave angle (beta).
- */
+
+// Calculates flow properties behind an oblique shock using M1 and wave angle (beta).
 export function computeObliqueShockProperties(M1, beta_deg, gamma) {
     const beta_rad = beta_deg * degToRad;
     const sin_beta = Math.sin(beta_rad);
@@ -331,9 +327,7 @@ export function computeObliqueShockProperties(M1, beta_deg, gamma) {
 }
 
 
-/**
- * Solves for the wave angle (beta) given M1 and the turn angle (theta). (Inversion of theta-beta-M)
- */
+// Solves for the wave angle (beta) given M1 and the turn angle (theta). (Inversion of theta-beta-M)
 export function solveBetaFromTurnAngle(M1, theta_deg, gamma) {
     if (M1 < 1.0001) return [NaN, NaN]; // No shock for subsonic flow
 

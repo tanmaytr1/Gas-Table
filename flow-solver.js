@@ -196,7 +196,7 @@ export function solveM1FromShockRatio(ratio_name, ratio_value, gamma) {
 
         case 'rho2_rho1':
             // M1^2 from rho2/rho1
-            const M1_sq_rho_num = two_gamma * ratio_value;
+            const M1_sq_rho_num = 2 * ratio_value; // <-- CORRECTED NUMERATOR (2X)
             const M1_sq_rho_den = gamma_plus_1 - gamma_minus_1 * ratio_value;
             const M1_sq_rho = M1_sq_rho_num / M1_sq_rho_den;
             return (M1_sq_rho >= 1) ? Math.sqrt(M1_sq_rho) : NaN;
